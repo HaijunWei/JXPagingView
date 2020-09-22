@@ -36,13 +36,13 @@ public protocol JXPagingViewListViewDelegate {
     /// 将要重置listScrollView的contentOffset
     @objc optional func listScrollViewWillResetContentOffset()
     /// 可选实现，列表将要显示的时候调用
-    @objc optional func listWillAppear()
+    @objc optional func pagerListWillAppear()
     /// 可选实现，列表显示的时候调用
-    @objc optional func listDidAppear()
+    @objc optional func pagerListDidAppear()
     /// 可选实现，列表将要消失的时候调用
-    @objc optional func listWillDisappear()
+    @objc optional func pagerListWillDisappear()
     /// 可选实现，列表消失的时候调用
-    @objc optional func listDidDisappear()
+    @objc optional func pagerListDidDisappear()
 }
 
 @objc
@@ -318,7 +318,7 @@ open class JXPagingListContainerView: UIView {
         }
         var existedList = validListDict[index]
         if existedList != nil {
-            existedList?.listWillAppear?()
+            existedList?.pagerListWillAppear?()
             if let vc = existedList as? UIViewController {
                 vc.beginAppearanceTransition(true, animated: false)
             }
@@ -340,7 +340,7 @@ open class JXPagingListContainerView: UIView {
                     list.listView().frame = CGRect(x: CGFloat(index)*scrollView.bounds.size.width, y: 0, width: scrollView.bounds.size.width, height: scrollView.bounds.size.height)
                     scrollView.addSubview(list.listView())
                 }
-                list.listWillAppear?()
+                list.pagerListWillAppear?()
                 if let vc = list as? UIViewController {
                     vc.beginAppearanceTransition(true, animated: false)
                 }
@@ -349,7 +349,7 @@ open class JXPagingListContainerView: UIView {
                 cell?.contentView.subviews.forEach { $0.removeFromSuperview() }
                 list.listView().frame = cell?.contentView.bounds ?? CGRect.zero
                 cell?.contentView.addSubview(list.listView())
-                list.listWillAppear?()
+                list.pagerListWillAppear?()
                 if let vc = list as? UIViewController {
                     vc.beginAppearanceTransition(true, animated: false)
                 }
@@ -363,7 +363,7 @@ open class JXPagingListContainerView: UIView {
         }
         currentIndex = index
         let list = validListDict[index]
-        list?.listDidAppear?()
+        list?.pagerListDidAppear?()
         if let vc = list as? UIViewController {
             vc.endAppearanceTransition()
         }
@@ -375,7 +375,7 @@ open class JXPagingListContainerView: UIView {
             return
         }
         let list = validListDict[index]
-        list?.listWillDisappear?()
+        list?.pagerListWillDisappear?()
         if let vc = list as? UIViewController {
             vc.beginAppearanceTransition(false, animated: false)
         }
@@ -386,7 +386,7 @@ open class JXPagingListContainerView: UIView {
             return
         }
         let list = validListDict[index]
-        list?.listDidDisappear?()
+        list?.pagerListDidDisappear?()
         if let vc = list as? UIViewController {
             vc.endAppearanceTransition()
         }
